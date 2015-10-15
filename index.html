@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CZ3006 Assignment 2</title>
+    </head>
+    <body>
+        <form>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label for="name">Name: </label></td>
+                        <td><input type="text" name="name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="apples">Number of apples (&cent;69 each): </label></td>
+                        <td><input type="text" id="apples" name="apples"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="oranges">Number of oranges (&cent;59 each): </label></td>
+                        <td><input type="text" id="oranges" name="oranges"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="bananas">Number of bananas (&cent;39 each): </label></td>
+                        <td><input type="text" id="bananas" name="bananas"></td>
+                    </tr>
+                    <tr>
+                        <td>Total:</td>
+                        <td><input type="text" id="total" name="total" readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td>Payment method:</td>
+                        <td>
+                            <label><input type="radio" name="payment" value="Visa">Visa</label>
+                            <label><input type="radio" name="payment" value="Mastercard">Mastercard</label>
+                            <label><input type="radio" name="payment" value="Discover">Discover</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" value="Submit">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+        1)	Write an HTML document to create a form that contains:
+A text box to collect the user’s name.
+Three text boxes for the user to key in the numbers of apples (69 cents each), oranges (59 cents each), and bananas (39 cents each) to purchase respectively. Whenever the user’s input in any of these text boxes changes, the validity of the input is checked at the client side using JavaScript. A valid input is defined as a sequence of one or more digits. If the input is not valid, an alert message is produced and the user is asked to input again.
+A text box showing the total cost of the user’s order. The purpose of this text box is to show the total cost of order to the user during his selection. This text box is not for user’s input, so it should be blurred whenever it acquires focus. Whenever the user’s input in any of the above three text boxes changes, if the input is not valid, this text box should display “NaN”, and if the input is valid, the total cost of the user’s order is recalculated and displayed in this text box. This calculation is to be done completely at the client side using JavaScript.
+A collection of three radio buttons that are labeled as Visa, MasterCard and Discover. This is for the user to input his payment method.
+A Submit button. On completing the form, the user clicks this button to submit his order to the web server.
+        <script>
+document.addEventListener("DOMContentLoaded", function() {
+    var total = NaN;
+    function validator(input) {
+        return input.length === 0 || (!isNaN(input) && isFinite(input) && (input == parseInt(input, 10)));
+    }
+    function handler(e) {
+        console.log(e);
+        var val = e.target.value;
+        if (!validator(val)) {
+            e.preventDefault();
+            //alert("an alert message is produced and the user is asked to input again");
+            return false;
+        }
+    }
+    document.getElementById("apples").addEventListener("keydown", handler, false);
+    document.getElementById("oranges").addEventListener("keydown", handler, false);
+    document.getElementById("bananas").addEventListener("keydown", handler, false);
+}, false);
+        </script>
+    </body>
+</html>
