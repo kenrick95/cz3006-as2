@@ -5,7 +5,7 @@
         <title>CZ3006 Assignment 2</title>
     </head>
     <body>
-        <form>
+        <form action="submit.php" method="post">
             <table>
                 <tbody>
                     <tr>
@@ -58,17 +58,29 @@ document.addEventListener("DOMContentLoaded", function() {
         return input.length === 0 || (!isNaN(input) && isFinite(input) && (input == parseInt(input, 10)));
     }
     function handler(e) {
-        console.log(e);
-        var val = e.target.value;
-        if (!validator(val)) {
+        var val = e.target.value + e.key;
+        if (e.keyCode === 0 && !validator(val)) {
             e.preventDefault();
-            //alert("an alert message is produced and the user is asked to input again");
+            alert("an alert message is produced and the user is asked to input again");
             return false;
         }
+
     }
-    document.getElementById("apples").addEventListener("keydown", handler, false);
-    document.getElementById("oranges").addEventListener("keydown", handler, false);
-    document.getElementById("bananas").addEventListener("keydown", handler, false);
+    function handler2(e) {
+        document.getElementById("total").value =
+            + .69 * document.getElementById("apples").value
+            + .59 * document.getElementById("oranges").value
+            + .39 * document.getElementById("bananas").value;
+    }
+    document.getElementById("apples").addEventListener("keypress", handler, false);
+    document.getElementById("oranges").addEventListener("keypress", handler, false);
+    document.getElementById("bananas").addEventListener("keypress", handler, false);
+    document.getElementById("apples").addEventListener("keyup", handler2, false);
+    document.getElementById("oranges").addEventListener("keyup", handler2, false);
+    document.getElementById("bananas").addEventListener("keyup", handler2, false);
+    document.getElementById("apples").value = "";
+    document.getElementById("oranges").value = "";
+    document.getElementById("bananas").value = "";
 }, false);
         </script>
     </body>
