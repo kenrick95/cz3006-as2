@@ -5,12 +5,13 @@
         <title>CZ3006 Assignment 2</title>
     </head>
     <body>
-        <form action="submit.php" method="post">
+        <h1>Hello,</h1>
+        <form id="form" action="submit.php" method="post">
             <table>
                 <tbody>
                     <tr>
                         <td><label for="name">Name: </label></td>
-                        <td><input type="text" name="name"></td>
+                        <td><input id="name" type="text" name="name"></td>
                     </tr>
                     <tr>
                         <td><label for="apples">Number of apples (&cent;69 each): </label></td>
@@ -38,49 +39,93 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" value="Submit">
+                            <input id="submit" type="submit" value="Submit">
                         </td>
                     </tr>
                 </tbody>
             </table>
         </form>
-
+<!--
         1)	Write an HTML document to create a form that contains:
 A text box to collect the user’s name.
 Three text boxes for the user to key in the numbers of apples (69 cents each), oranges (59 cents each), and bananas (39 cents each) to purchase respectively. Whenever the user’s input in any of these text boxes changes, the validity of the input is checked at the client side using JavaScript. A valid input is defined as a sequence of one or more digits. If the input is not valid, an alert message is produced and the user is asked to input again.
 A text box showing the total cost of the user’s order. The purpose of this text box is to show the total cost of order to the user during his selection. This text box is not for user’s input, so it should be blurred whenever it acquires focus. Whenever the user’s input in any of the above three text boxes changes, if the input is not valid, this text box should display “NaN”, and if the input is valid, the total cost of the user’s order is recalculated and displayed in this text box. This calculation is to be done completely at the client side using JavaScript.
 A collection of three radio buttons that are labeled as Visa, MasterCard and Discover. This is for the user to input his payment method.
-A Submit button. On completing the form, the user clicks this button to submit his order to the web server.
+A Submit button. On completing the form, the user clicks this button to submit his order to the web server. -->
         <script>
 document.addEventListener("DOMContentLoaded", function() {
     var total = NaN;
-    function validator(input) {
+    function isValid(input) {
         return input.length === 0 || (!isNaN(input) && isFinite(input) && (input == parseInt(input, 10)));
     }
     function handler(e) {
-        var val = e.target.value + e.key;
-        if (e.keyCode === 0 && !validator(val)) {
-            e.preventDefault();
-            alert("an alert message is produced and the user is asked to input again");
-            return false;
+        var val = e.target.value;
+        if (!isValid(val)) {
+            alert("Invalid input, please input again");
+            e.target.focus();
         }
-
-    }
-    function handler2(e) {
         document.getElementById("total").value =
             + .69 * document.getElementById("apples").value
             + .59 * document.getElementById("oranges").value
             + .39 * document.getElementById("bananas").value;
     }
-    document.getElementById("apples").addEventListener("keypress", handler, false);
-    document.getElementById("oranges").addEventListener("keypress", handler, false);
-    document.getElementById("bananas").addEventListener("keypress", handler, false);
-    document.getElementById("apples").addEventListener("keyup", handler2, false);
-    document.getElementById("oranges").addEventListener("keyup", handler2, false);
-    document.getElementById("bananas").addEventListener("keyup", handler2, false);
+    document.getElementById("apples").addEventListener("keyup", handler, false);
+    document.getElementById("oranges").addEventListener("keyup", handler, false);
+    document.getElementById("bananas").addEventListener("keyup", handler, false);
     document.getElementById("apples").value = "";
     document.getElementById("oranges").value = "";
     document.getElementById("bananas").value = "";
+
+    document.getElementById("total").addEventListener("focus", function (e) {
+        e.target.blur();
+    }, false);
+
+    function handleSubmit(e) {
+        var check = [{
+            selector: "#name",
+            checker: (document.getElementById("name").value.length === 0),
+            msg: "Please enter a name"
+        }, {
+            selector: "#apples",
+            checker: (document.getElementById("apples").value.length === 0),
+            msg: "Please input number of apples"
+        }, {
+            selector: "#oranges",
+            checker: (document.getElementById("oranges").value.length === 0),
+            msg: "Please input number of oranges"
+        }, {
+            selector: "#bananas",
+            checker: (document.getElementById("bananas").value.length === 0),
+            msg: "Please input number of bananas"
+        }, {
+            selector: 'input[name="payment"]',
+            checker: !document.querySelector('input[name="payment"]:checked'),
+            msg: "Please select a payment method"
+        }, {
+            selector: "#apples",
+            checker: !isValid(document.getElementById("apples").value),
+            msg: "Invalid input on number of apples, please check your input again"
+        }, {
+            selector: "#oranges",
+            checker: !isValid(document.getElementById("oranges").value),
+            msg: "Invalid input on number of oranges, please check your input again"
+        }, {
+            selector: "#bananas",
+            checker: !isValid(document.getElementById("bananas").value),
+            msg: "Invalid input on number of bananas, please check your input again"
+        }];
+        for (var i = 0; i < check.length; i++) {
+            if (check[i].checker) {
+                alert(check[i].msg);
+                document.querySelector(check[i].selector).focus();
+                e.preventDefault();
+                return false;
+            }
+        }
+
+
+    }
+    document.getElementById("form").addEventListener("submit", handleSubmit, false);
 }, false);
         </script>
     </body>
