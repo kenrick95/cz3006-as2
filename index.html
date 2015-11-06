@@ -1,73 +1,83 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>CZ3006 Assignment 2</title>
-    </head>
-    <body>
-        <h1>Hello,</h1>
-        <form id="form" action="submit.php" method="post">
-            <table>
-                <tbody>
-                    <tr>
-                        <td><label for="name">Name: </label></td>
-                        <td><input id="name" type="text" name="name"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="apples">Number of apples (&cent;69 each): </label></td>
-                        <td><input type="text" id="apples" name="apples"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="oranges">Number of oranges (&cent;59 each): </label></td>
-                        <td><input type="text" id="oranges" name="oranges"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="bananas">Number of bananas (&cent;39 each): </label></td>
-                        <td><input type="text" id="bananas" name="bananas"></td>
-                    </tr>
-                    <tr>
-                        <td>Total:</td>
-                        <td><input type="text" id="total" name="total" readonly="readonly"></td>
-                    </tr>
-                    <tr>
-                        <td>Payment method:</td>
-                        <td>
-                            <label><input type="radio" name="payment" value="Visa">Visa</label>
-                            <label><input type="radio" name="payment" value="Mastercard">Mastercard</label>
-                            <label><input type="radio" name="payment" value="Discover">Discover</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <input id="submit" type="submit" value="Submit">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-        <script>
-document.addEventListener("DOMContentLoaded", function() {
+<head>
+  <meta charset="utf-8">
+  <title>CZ3006 Assignment 2</title>
+</head>
+<body>
+  <h1>Hello,</h1>
+  <form id="form" action="submit.php" method="post">
+    <table>
+      <tbody>
+        <tr>
+          <td><label for="name">Name: </label></td>
+          <td><input id="name" type="text" name="name"></td>
+        </tr>
+        <tr>
+          <td><label for="apples">Number of apples (&cent;69 each): </label></td>
+          <td><input type="text" id="apples" name="apples"></td>
+        </tr>
+        <tr>
+          <td><label for="oranges">Number of oranges (&cent;59 each): </label></td>
+          <td><input type="text" id="oranges" name="oranges"></td>
+        </tr>
+        <tr>
+          <td><label for="bananas">Number of bananas (&cent;39 each): </label></td>
+          <td><input type="text" id="bananas" name="bananas"></td>
+        </tr>
+        <tr>
+          <td>Total:</td>
+          <td><input type="text" id="total" name="total"></td>
+        </tr>
+        <tr>
+          <td>Payment method:</td>
+          <td>
+            <label>
+              <input type="radio" name="payment" value="Visa"> Visa
+            </label>
+            <label>
+              <input type="radio" name="payment" value="Mastercard"> Mastercard
+            </label>
+            <label>
+              <input type="radio" name="payment" value="Discover"> Discover
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input id="submit" type="submit" value="Submit">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
     function isValid(input) {
-        // valid if input is:
-        // 1. not of length zero
-        // 2. a number (not NaN)
-        // 3. a finite number
-        // 4. an integer (parse input as integer and the value stays the same; if a decimal number is inputed, this condition will fail)
-        return input.length === 0 || (!isNaN(input) && isFinite(input) && (input == parseInt(input, 10)));
+      // valid if input is:
+      // 1. its length is zero
+      // 2. a number (not NaN)
+      // 3. a finite number
+      // 4. an integer (parse input as integer and the value stays the same;
+      //            if a decimal number is inputed, this condition will fail)
+      return input.length === 0 ||
+        (!isNaN(input) &&
+          isFinite(input) &&
+          (input == parseInt(input, 10)));
     }
     function handler(e) {
-        var val = e.target.value;
-        if (!isValid(val)) {
-            // invalid input alert + focus element
-            alert("Invalid input, please input again");
-            e.target.focus();
-        }
+      var val = e.target.value;
+      if (!isValid(val)) {
+        // invalid input alert + focus element
+        alert("Invalid input, please input again");
+        e.target.focus();
+      }
 
-        // calculate total money payable
-        document.getElementById("total").value =
-			0.69 * document.getElementById("apples").value +
-            0.59 * document.getElementById("oranges").value +
-            0.39 * document.getElementById("bananas").value;
+      // calculate total money payable
+      document.getElementById("total").value =
+      0.69 * document.getElementById("apples").value +
+      0.59 * document.getElementById("oranges").value +
+      0.39 * document.getElementById("bananas").value;
     }
     // attach "handler" to these three elems
     document.getElementById("apples").addEventListener("keyup", handler, false);
@@ -81,62 +91,62 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // make illusion that "total" is uneditable
     document.getElementById("total").addEventListener("focus", function (e) {
-        e.target.blur();
+      e.target.blur();
     }, false);
 
     function handleSubmit(e) {
-        // validators
-        // for each condition,
-        //     if "checker" is true, some invalidity has occurred
-        //         hence, "msg" alert is shown; and "selector" is focused
-        var check = [{
-            selector: "#name",
-            checker: (document.getElementById("name").value.length === 0),
-            msg: "Please enter a name"
-        }, {
-            selector: "#apples",
-            checker: (document.getElementById("apples").value.length === 0),
-            msg: "Please input number of apples"
-        }, {
-            selector: "#oranges",
-            checker: (document.getElementById("oranges").value.length === 0),
-            msg: "Please input number of oranges"
-        }, {
-            selector: "#bananas",
-            checker: (document.getElementById("bananas").value.length === 0),
-            msg: "Please input number of bananas"
-        }, {
-            selector: 'input[name="payment"]',
-            checker: !document.querySelector('input[name="payment"]:checked'),
-            msg: "Please select a payment method"
-        }, {
-            selector: "#apples",
-            checker: !isValid(document.getElementById("apples").value),
-            msg: "Invalid input on number of apples, please check your input again"
-        }, {
-            selector: "#oranges",
-            checker: !isValid(document.getElementById("oranges").value),
-            msg: "Invalid input on number of oranges, please check your input again"
-        }, {
-            selector: "#bananas",
-            checker: !isValid(document.getElementById("bananas").value),
-            msg: "Invalid input on number of bananas, please check your input again"
-        }];
+      // validators
+      // for each condition,
+      //     if "checker" is true, some invalidity has occurred
+      //         hence, "msg" alert is shown; and "selector" is focused
+      var check = [{
+        selector: "#name",
+        checker: (document.getElementById("name").value.length === 0),
+        msg: "Please enter a name"
+      }, {
+        selector: "#apples",
+        checker: (document.getElementById("apples").value.length === 0),
+        msg: "Please input number of apples"
+      }, {
+        selector: "#oranges",
+        checker: (document.getElementById("oranges").value.length === 0),
+        msg: "Please input number of oranges"
+      }, {
+        selector: "#bananas",
+        checker: (document.getElementById("bananas").value.length === 0),
+        msg: "Please input number of bananas"
+      }, {
+        selector: 'input[name="payment"]',
+        checker: !document.querySelector('input[name="payment"]:checked'),
+        msg: "Please select a payment method"
+      }, {
+        selector: "#apples",
+        checker: !isValid(document.getElementById("apples").value),
+        msg: "Invalid input on number of apples, please check your input again"
+      }, {
+        selector: "#oranges",
+        checker: !isValid(document.getElementById("oranges").value),
+        msg: "Invalid input on number of oranges, please check your input again"
+      }, {
+        selector: "#bananas",
+        checker: !isValid(document.getElementById("bananas").value),
+        msg: "Invalid input on number of bananas, please check your input again"
+      }];
 
-        // check all those validators defined above
-        for (var i = 0; i < check.length; i++) {
-            if (check[i].checker) {
-                alert(check[i].msg);
-                document.querySelector(check[i].selector).focus();
-                e.preventDefault();
-                return false;
-            }
+      // check all those validators defined above
+      for (var i = 0; i < check.length; i++) {
+        if (check[i].checker) {
+          alert(check[i].msg);
+          document.querySelector(check[i].selector).focus();
+          e.preventDefault();
+          return false;
         }
+      }
 
 
     }
     document.getElementById("form").addEventListener("submit", handleSubmit, false);
-}, false);
-        </script>
-    </body>
+  }, false);
+  </script>
+</body>
 </html>
