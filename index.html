@@ -45,42 +45,50 @@
                 </tbody>
             </table>
         </form>
-<!--
-        1)	Write an HTML document to create a form that contains:
-A text box to collect the user’s name.
-Three text boxes for the user to key in the numbers of apples (69 cents each), oranges (59 cents each), and bananas (39 cents each) to purchase respectively. Whenever the user’s input in any of these text boxes changes, the validity of the input is checked at the client side using JavaScript. A valid input is defined as a sequence of one or more digits. If the input is not valid, an alert message is produced and the user is asked to input again.
-A text box showing the total cost of the user’s order. The purpose of this text box is to show the total cost of order to the user during his selection. This text box is not for user’s input, so it should be blurred whenever it acquires focus. Whenever the user’s input in any of the above three text boxes changes, if the input is not valid, this text box should display “NaN”, and if the input is valid, the total cost of the user’s order is recalculated and displayed in this text box. This calculation is to be done completely at the client side using JavaScript.
-A collection of three radio buttons that are labeled as Visa, MasterCard and Discover. This is for the user to input his payment method.
-A Submit button. On completing the form, the user clicks this button to submit his order to the web server. -->
         <script>
 document.addEventListener("DOMContentLoaded", function() {
-    var total = NaN;
     function isValid(input) {
+        // valid if input is:
+        // 1. not of length zero
+        // 2. a number (not NaN)
+        // 3. a finite number
+        // 4. an integer (parse input as integer and the value stays the same; if a decimal number is inputed, this condition will fail)
         return input.length === 0 || (!isNaN(input) && isFinite(input) && (input == parseInt(input, 10)));
     }
     function handler(e) {
         var val = e.target.value;
         if (!isValid(val)) {
+            // invalid input alert + focus element
             alert("Invalid input, please input again");
             e.target.focus();
         }
+
+        // calculate total money payable
         document.getElementById("total").value =
-            + .69 * document.getElementById("apples").value
-            + .59 * document.getElementById("oranges").value
-            + .39 * document.getElementById("bananas").value;
+			0.69 * document.getElementById("apples").value +
+            0.59 * document.getElementById("oranges").value +
+            0.39 * document.getElementById("bananas").value;
     }
+    // attach "handler" to these three elems
     document.getElementById("apples").addEventListener("keyup", handler, false);
     document.getElementById("oranges").addEventListener("keyup", handler, false);
     document.getElementById("bananas").addEventListener("keyup", handler, false);
+
+    // init
     document.getElementById("apples").value = "";
     document.getElementById("oranges").value = "";
     document.getElementById("bananas").value = "";
 
+    // make illusion that "total" is uneditable
     document.getElementById("total").addEventListener("focus", function (e) {
         e.target.blur();
     }, false);
 
     function handleSubmit(e) {
+        // validators
+        // for each condition,
+        //     if "checker" is true, some invalidity has occurred
+        //         hence, "msg" alert is shown; and "selector" is focused
         var check = [{
             selector: "#name",
             checker: (document.getElementById("name").value.length === 0),
@@ -114,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function() {
             checker: !isValid(document.getElementById("bananas").value),
             msg: "Invalid input on number of bananas, please check your input again"
         }];
+
+        // check all those validators defined above
         for (var i = 0; i < check.length; i++) {
             if (check[i].checker) {
                 alert(check[i].msg);
